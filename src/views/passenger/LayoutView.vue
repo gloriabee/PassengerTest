@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted, defineProps } from 'vue'
-
+import { ref, onMounted } from 'vue'
 import { type Passenger } from '@/types'
 import PassengerService from '@/services/PassengerService'
 
 const passenger = ref<Passenger | null>(null)
-
 const props = defineProps({
   id: {
     type: String,
@@ -23,11 +21,15 @@ onMounted(() => {
     })
 })
 </script>
-
 <template>
   <div v-if="passenger">
-    <h4>Name: {{ passenger.name }}</h4>
-    <p>Trips: {{ passenger.trips }}</p>
+    <nav>
+      <RouterLink :to="{ name: 'home' }">Home</RouterLink> |
+      <RouterLink :to="{ name: 'passenger-detail-view' }">Passenger Details</RouterLink>
+      |
+      <RouterLink :to="{ name: 'airline-detail-view' }">Airline Details</RouterLink>
+    </nav>
+    <RouterView :passenger="passenger" />
   </div>
 </template>
 

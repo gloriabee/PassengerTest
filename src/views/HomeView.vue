@@ -46,26 +46,26 @@ onMounted(() => {
   <h2>Passenger Names</h2>
   <div class="passengers">
     <PassengerCard v-for="passenger in passengers" :key="passenger._id" :passenger="passenger" />
-  </div>
 
-  <div class="pagination">
-    <RouterLink
-      id="page-prev"
-      :to="{ name: 'home', query: { page: page - 1, pageSize: pageSize } }"
-      rel="prev"
-      v-if="page != 1"
-    >
-      &#60; Prev Page
-    </RouterLink>
+    <div class="pagination">
+      <RouterLink
+        id="page-prev"
+        :to="{ name: 'home', query: { page: page - 1, pageSize: pageSize } }"
+        rel="prev"
+        v-if="page != 1"
+      >
+        &#60; Prev Page
+      </RouterLink>
 
-    <RouterLink
-      id="page-next"
-      :to="{ name: 'home', query: { page: page + 1, pageSize: pageSize } }"
-      rel="next"
-      v-if="hasNextPage"
-    >
-      Next Page &#62;
-    </RouterLink>
+      <RouterLink
+        id="page-next"
+        :to="{ name: 'home', query: { page: page + 1, pageSize: pageSize } }"
+        rel="next"
+        v-if="hasNextPage"
+      >
+        Next Page &#62;
+      </RouterLink>
+    </div>
   </div>
 </template>
 
@@ -81,7 +81,6 @@ h2 {
 }
 
 .pagination {
-  margin: auto;
   display: flex;
   width: 290px;
 }
@@ -96,7 +95,8 @@ h2 {
 
 #page-prev,
 #page-next {
+  color: white;
   text-align: center;
-  background-color: aquamarine;
+  background-color: rgb(61, 201, 26);
 }
 </style>

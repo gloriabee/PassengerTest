@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 // set up size of each page
-const pageSize = ref(7)
+const pageSize = ref(6)
 </script>
 
 <template>
@@ -16,9 +16,8 @@ const pageSize = ref(7)
         </nav>
       </div>
     </header>
+    <RouterView />
   </div>
-
-  <RouterView />
 </template>
 
 <style scoped>
