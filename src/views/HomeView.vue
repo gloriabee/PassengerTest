@@ -6,7 +6,7 @@ import PassengerService from '@/services/PassengerService'
 const passengers = ref<Passenger[] | null>(null)
 const totalPassengers = ref(0)
 const hasNextPage = computed(() => {
-  const totalPages = Math.ceil(totalPassengers.value / 5)
+  const totalPages = Math.ceil(totalPassengers.value / pageSize.value)
   return page.value < totalPages
 })
 
@@ -14,27 +14,23 @@ const props = defineProps({
   page: {
     type: Number,
     required: true
+  },
+  pageSize: {
+    type: Number,
+    required: true
   }
 })
 
 const page = computed(() => props.page)
+const pageSize = computed(() => props.pageSize)
 
 onMounted(() => {
-  // PassengerService.getPassengers(2, page.value)
-  //   .then((response) => {
-  //     passengers.value = response.data.data.slice(0, 2)
-  //     // console.log(response.data.data.slice(0, 2))
-  //   })
-  //   .catch((error) => {
-  //     console.error('There was an error!', error)
-  //   })
-
   watchEffect(() => {
     passengers.value = null
-    PassengerService.getPassengers(5, page.value)
+    PassengerService.getPassengers(pageSize.value, page.value)
       .then((response) => {
-        const startIndex = (page.value - 1) * 5
-        const endIndex = startIndex + 5
+        const startIndex = (page.value - 1) * pageSize.value
+        const endIndex = startIndex + pageSize.value
         passengers.value = response.data.data.slice(startIndex, endIndex)
         totalPassengers.value = response.data.totalPassengers
         // console.log(response.data.totalPassengers)
@@ -55,7 +51,7 @@ onMounted(() => {
   <div class="pagination">
     <RouterLink
       id="page-prev"
-      :to="{ name: 'home', query: { page: page - 1 } }"
+      :to="{ name: 'home', query: { page: page - 1, pageSize: pageSize } }"
       rel="prev"
       v-if="page != 1"
     >
@@ -64,7 +60,7 @@ onMounted(() => {
 
     <RouterLink
       id="page-next"
-      :to="{ name: 'home', query: { page: page + 1 } }"
+      :to="{ name: 'home', query: { page: page + 1, pageSize: pageSize } }"
       rel="next"
       v-if="hasNextPage"
     >

@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
+// set up size of each page
+const pageSize = ref(7)
 </script>
 
 <template>
@@ -9,7 +12,7 @@ import { RouterLink, RouterView } from 'vue-router'
         <nav>
           <!-- <RouterLink to="/">Passengers</RouterLink> |
           <RouterLink to="/about">About</RouterLink> -->
-          <RouterLink :to="{ name: 'home' }">Passengers</RouterLink>
+          <RouterLink :to="{ name: 'home', query: { pageSize: pageSize } }">Passengers</RouterLink>
         </nav>
       </div>
     </header>
