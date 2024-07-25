@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Passenger } from '@/types'
+import { type Passenger } from '@/types'
 
 defineProps<{
   passenger: Passenger

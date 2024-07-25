@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import PassengerCard from '@/components/PassengerCard.vue'
-import type { Passenger } from '@/types'
-import { ref, onMounted, computed, defineProps } from 'vue'
+import { type Passenger } from '@/types'
+import { ref, onMounted, computed, defineProps, watchEffect } from 'vue'
 import PassengerService from '@/services/PassengerService'
 const passengers = ref<Passenger[] | null>(null)
+const totalPassengers = ref(0)
+const hasNextPage = computed(() => {
+  const totalPages = Math.ceil(totalPassengers.value / 5)
+  return page.value < totalPages
+})
 
 const props = defineProps({
   page: {
@@ -15,14 +20,29 @@ const props = defineProps({
 const page = computed(() => props.page)
 
 onMounted(() => {
-  PassengerService.getPassengers(2, page.value)
-    .then((response) => {
-      passengers.value = response.data.data.slice(2)
-      // console.log(response.data.data.slice(0, 2))
-    })
-    .catch((error) => {
-      console.error('There was an error!', error)
-    })
+  // PassengerService.getPassengers(2, page.value)
+  //   .then((response) => {
+  //     passengers.value = response.data.data.slice(0, 2)
+  //     // console.log(response.data.data.slice(0, 2))
+  //   })
+  //   .catch((error) => {
+  //     console.error('There was an error!', error)
+  //   })
+
+  watchEffect(() => {
+    passengers.value = null
+    PassengerService.getPassengers(5, page.value)
+      .then((response) => {
+        const startIndex = (page.value - 1) * 5
+        const endIndex = startIndex + 5
+        passengers.value = response.data.data.slice(startIndex, endIndex)
+        totalPassengers.value = response.data.totalPassengers
+        // console.log(response.data.totalPassengers)
+      })
+      .catch((error) => {
+        console.error('There was an error!', error)
+      })
+  })
 })
 </script>
 
@@ -30,6 +50,26 @@ onMounted(() => {
   <h2>Passenger Names</h2>
   <div class="passengers">
     <PassengerCard v-for="passenger in passengers" :key="passenger._id" :passenger="passenger" />
+  </div>
+
+  <div class="pagination">
+    <RouterLink
+      id="page-prev"
+      :to="{ name: 'home', query: { page: page - 1 } }"
+      rel="prev"
+      v-if="page != 1"
+    >
+      &#60; Prev Page
+    </RouterLink>
+
+    <RouterLink
+      id="page-next"
+      :to="{ name: 'home', query: { page: page + 1 } }"
+      rel="next"
+      v-if="hasNextPage"
+    >
+      Next Page &#62;
+    </RouterLink>
   </div>
 </template>
 
@@ -42,5 +82,25 @@ onMounted(() => {
 h2 {
   text-align: center;
   color: rgb(12, 118, 4);
+}
+
+.pagination {
+  margin: auto;
+  display: flex;
+  width: 290px;
+}
+
+.pagination a {
+  padding: 8px;
+  margin: 0 12px;
+  flex: 1;
+  text-decoration: none;
+  color: #2c3e50;
+}
+
+#page-prev,
+#page-next {
+  text-align: center;
+  background-color: aquamarine;
 }
 </style>
