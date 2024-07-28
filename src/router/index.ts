@@ -15,7 +15,7 @@ const router = createRouter({
       component: HomeView,
       props: (route) => ({
         page: parseInt(route.query.page?.toString() || '1'),
-        pageSize: parseInt(route.query.pageSize?.toString() || '5')
+        pageSize: parseInt(route.query.pageSize?.toString() || '10')
       })
     },
     {
@@ -55,11 +55,22 @@ const router = createRouter({
       name: 'not-found',
       component: NotFoundView
     }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { top: 0 }
+    }
+  }
 })
 
 router.beforeEach(() => {
   nProgress.start()
+})
+
+router.afterEach(() => {
+  nProgress.done()
 })
 
 export default router

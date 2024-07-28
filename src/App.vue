@@ -5,7 +5,7 @@ import { useMessageStore } from './stores/message'
 import { storeToRefs } from 'pinia'
 
 // set up size of each page
-const pageSize = ref(6)
+const pageSize = ref(10)
 const store = useMessageStore()
 const { message } = storeToRefs(store)
 </script>
