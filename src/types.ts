@@ -15,3 +15,6 @@ export interface Airline {
   established: string
   _v: number
 }
+export interface MessageState {
+  message: string
+}

@@ -1,13 +1,23 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
+import { useMessageStore } from './stores/message'
+import { storeToRefs } from 'pinia'
+
 // set up size of each page
 const pageSize = ref(6)
+const store = useMessageStore()
+const { message } = storeToRefs(store)
 </script>
 
 <template>
   <div id="layout">
     <header>
+      <!--flash message-->
+      <div id="flashMessage" v-if="message">
+        <h4>{{ message }}</h4>
+      </div>
+
       <div class="wrapper">
         <nav>
           <!-- <RouterLink to="/">Passengers</RouterLink> |
@@ -40,5 +50,18 @@ nav a {
 }
 nav a.router-link-exact-active {
   color: #42b983;
+}
+
+@keyframes yellofade {
+  from {
+    background-color: yellow;
+  }
+  to {
+    background-color: transparent;
+  }
+}
+
+#flashMessage {
+  animation: yellofade 5s ease-in-out;
 }
 </style>
