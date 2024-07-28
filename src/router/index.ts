@@ -4,6 +4,7 @@ import PassengerDetailView from '@/views/passenger/DetailView.vue'
 import AirlineDetailView from '@/views/passenger/AirlineDetailView.vue'
 import LayoutView from '@/views/passenger/LayoutView.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
+import PassengerEditView from '@/views/passenger/EditDetailView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,12 +31,24 @@ const router = createRouter({
           props: true
         },
         {
+          path: '',
+          name: 'passenger-edit-view',
+          component: PassengerEditView,
+          props: true
+        },
+        {
           path: 'airline',
           name: 'airline-detail-view',
           component: AirlineDetailView,
           props: true
         }
       ]
+    },
+    {
+      path: '/404/:resource',
+      name: '404-resource-view',
+      component: NotFoundView,
+      props: true
     },
     {
       path: '/:catchAll(.*)',

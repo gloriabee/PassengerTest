@@ -1,11 +1,11 @@
 export interface Passenger {
-  _id: string
+  _id: number
   name: string
   trips: number
   airline: Airline[]
 }
 export interface Airline {
-  _id: string
+  _id: number
   name: string
   country: string
   logo: string
