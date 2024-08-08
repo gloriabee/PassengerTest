@@ -17,7 +17,6 @@ const { message } = storeToRefs(store)
       <div id="flashMessage" v-if="message">
         <h4>{{ message }}</h4>
       </div>
-
       <div class="wrapper">
         <nav>
           <!-- <RouterLink to="/">Passengers</RouterLink> |
